@@ -1,0 +1,26 @@
+SSLCertificateFile    /etc/x509/https/tls.crt
+SSLCertificateKeyFile /etc/x509/https/tls.key
+
+OIDCOAuthIntrospectionEndpoint https://localhost/introspect.json
+OIDCOAuthIntrospectionEndpointParams token_type_hint=access_token
+OIDCOAuthSSLValidateServer Off
+
+# see https://github.com/zmartzone/mod_auth_openidc/issues/388
+OIDCCacheEncrypt On
+#OIDCOAuthTokenExpiryClaim dummy absolute mandatory
+
+OIDCOAuthClientID resource-server
+OIDCOAuthClientSecret dummy
+
+LogLevel debug
+
+<VirtualHost *:80>
+    ServerName localhost
+
+    <Location />
+        AuthType oauth20
+        Require valid-user
+    </Location>
+
+</VirtualHost>
+
